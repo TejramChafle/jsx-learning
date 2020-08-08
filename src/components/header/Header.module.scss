@@ -1,0 +1,29 @@
+.AppHeader {
+    background-color: #282c34;
+    min-height: 50px;
+    // position: fixed;
+    top: 0;
+    width: 100%;
+    color: azure;
+    font-size: large;
+    padding: 15px;
+
+    .ant-menu-item {
+        &:last-child() {
+            float: right;
+        }
+    }
+
+    .ant-page-header {
+        background-color: #282c34;
+        .ant-menu.ant-menu-light {
+            background: #282c34;
+            color: cornsilk;
+        }
+    }
+
+    .ant-menu.ant-menu-light {
+        background: #282c34;
+        color: cornsilk;
+    }
+}

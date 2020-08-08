@@ -1,0 +1,44 @@
+// @import '../../../../node_modules/antd/dist/antd.css';
+
+.Login {
+    background-color: #eee;
+    height: 100vh;
+    .LoginContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: auto;
+        height: 100vh;
+        .LoginCard {
+            width: 400px;
+            height: auto;
+            text-align: center;
+            // background-color: #d5e9f1;
+            background-color: #282c34;
+            .ant-card-body, h1 {
+                color: #61dafb;
+            }
+            // padding: 15px;
+            img {
+                // width: 150px;
+                .Logo {
+                    height: 20vmin !important;
+                }
+            }
+            img.Logo {
+                height: 20vmin !important;
+            }
+
+            .Error {
+                padding: 15px;
+                // text-align: left;
+                color: coral;
+            }
+
+            Form {
+                text-align: left;
+            }
+        }
+    }
+}
