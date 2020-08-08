@@ -4,7 +4,10 @@ import { API_URL } from '../../config';
 import { Table, Tag, Space, Button, Popconfirm, message } from 'antd';
 import { UserAddOutlined } from '@ant-design/icons';
 import * as classes from './Students.module.scss';
-import {} from 'react-router-dom';
+// import {} from 'react-router-dom';
+
+import { connect } from 'react-redux';
+import * as actions from '../../store/student/actions';
 
 class Students extends React.Component {
     user = JSON.parse(localStorage.getItem('auth'));
@@ -71,8 +74,9 @@ class Students extends React.Component {
     }
 
     onDelete = (record) => {
-        console.log('onDelete', record);
-        axios.delete(API_URL + 'students/' + record.key + '/.json?auth=' + this.user.idToken)
+        // console.log('onDelete', record);
+        this.props.onDelete(record  );
+        /* axios.delete(API_URL + 'students/' + record.key + '/.json?auth=' + this.user.idToken)
             .then(response => {
                 console.log(response);
                 this.componentDidMount();
@@ -83,7 +87,7 @@ class Students extends React.Component {
                 console.log(error);
                 this.setState({ loading: false });
                 message.error('Opps! Something went wrong. Unable to delete student record.');
-            });
+            }); */
     }
 
     onEdit = (student) => {
@@ -98,7 +102,7 @@ class Students extends React.Component {
 
     componentDidMount() {
         // console.log(API_URL + 'students.json?auth=' + this.user.idToken);
-        this.setState({ loading: true });
+        /* this.setState({ loading: true });
         axios.get(API_URL + 'students.json?auth=' + this.user.idToken)
             .then(response => {
                 // console.log(response);
@@ -122,11 +126,20 @@ class Students extends React.Component {
                 // this.setState({message: (<div className={classes.Error}>Username or password is incorrect!</div>)});
                 console.log(error);
                 this.setState({ loading: false });
-            });
+                message.error('Session expired, Please login.');
+                localStorage.clear();
+                this.props.history.push({ pathname: '/login' });
+            }); */
+        this.props.getStudents();
     }
 
     navigate = () => {
         this.props.history.push({ pathname: '/student' });
+    }
+
+    componentDidUpdate() {
+        console.log(this.props.stateStudents);
+        console.log('stateStudentUpdated : ', this.props.stateStudentUpdated);
     }
 
     render() {
@@ -142,10 +155,25 @@ class Students extends React.Component {
                 </Button>
                 <br />
                 <h3>STUDENTS INFORMATION</h3>
-                <Table columns={this.cols} dataSource={this.state.students} bordered></Table>
+                {/* <Table columns={this.cols} dataSource={this.state.students} bordered></Table> */}
+                <Table columns={this.cols} dataSource={this.props.stateStudents} bordered></Table>
             </div>
         );
     }
 }
 
-export default Students;
+const mapStateToProps = state => {
+    return {
+        stateStudents: state.students,
+        stateStudentUpdated: state.updated
+    };
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onDelete: (student) => dispatch(actions.deleteStudent(student)),
+        getStudents: () => dispatch(actions.getStudents()),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Students);
