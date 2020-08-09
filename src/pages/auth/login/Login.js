@@ -16,7 +16,7 @@ class Login extends React.Component {
 
     render() {
         // console.log(FIREBASE_CONFIG);
-        console.log(this.props);
+        // console.log(this.props);
 
         const layout = {
             labelCol: { span: 8 },

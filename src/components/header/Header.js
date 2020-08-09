@@ -41,7 +41,7 @@ class Header extends React.Component {
                 <Menu.Item key="/exams" icon={<SnippetsOutlined />}>
                     Exams
                 </Menu.Item>
-                <Menu.Item key="/login" icon={<LogoutOutlined />} style={{float: 'right'}}>
+                <Menu.Item key="/login" icon={<LogoutOutlined />} className={classes.Logout}>
                     Logout
                 </Menu.Item>
             </Menu>

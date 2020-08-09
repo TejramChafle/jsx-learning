@@ -26,4 +26,10 @@
         background: #282c34;
         color: cornsilk;
     }
+
+    .Logout {
+        @media screen and (min-width: 540px) {
+            float: right;
+        }
+    }
 }

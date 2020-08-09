@@ -1,10 +1,7 @@
 import React from 'react';
-import axios from 'axios';
-import { API_URL } from '../../config';
-import { Table, Tag, Space, Button, Popconfirm, message } from 'antd';
+import { Table, Space, Button, Popconfirm } from 'antd';
 import { UserAddOutlined } from '@ant-design/icons';
 import * as classes from './Students.module.scss';
-// import {} from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import * as actions from '../../store/student/actions';
@@ -51,7 +48,8 @@ class Students extends React.Component {
                     <Button htmlType="button" type="primary" onClick={() => this.onEdit(record)}>Edit</Button>
                     <Popconfirm
                         title="Are you sure you want to delete?"
-                        onConfirm={() => this.onDelete(record)}
+                        // onConfirm={() => this.onDelete(record)}
+                        onConfirm={()=>this.props.onDelete(record)}
                         // onCancel={}
                         okText="Delete"
                         cancelText="No"
@@ -73,23 +71,6 @@ class Students extends React.Component {
         }
     }
 
-    onDelete = (record) => {
-        // console.log('onDelete', record);
-        this.props.onDelete(record  );
-        /* axios.delete(API_URL + 'students/' + record.key + '/.json?auth=' + this.user.idToken)
-            .then(response => {
-                console.log(response);
-                this.componentDidMount();
-                message.success('Student record deleted.');
-            }).catch(error => {
-                this.setState({ error: true });
-                // this.setState({message: (<div className={classes.Error}>Username or password is incorrect!</div>)});
-                console.log(error);
-                this.setState({ loading: false });
-                message.error('Opps! Something went wrong. Unable to delete student record.');
-            }); */
-    }
-
     onEdit = (student) => {
         console.log('onEdit', student);
         this.props.history.push({
@@ -101,35 +82,6 @@ class Students extends React.Component {
     }
 
     componentDidMount() {
-        // console.log(API_URL + 'students.json?auth=' + this.user.idToken);
-        /* this.setState({ loading: true });
-        axios.get(API_URL + 'students.json?auth=' + this.user.idToken)
-            .then(response => {
-                // console.log(response);
-                let students = [];
-                for (let key in response.data) {
-                    // console.log(response.data[key]);
-                    students.push({
-                        key: key,
-                        name: response.data[key]['name'],
-                        dob: response.data[key]['dob'],
-                        gender: response.data[key]['gender'],
-                        email: response.data[key]['email'],
-                        // address: response.data[key]['address'],
-                        class: response.data[key]['class']
-                    })
-                };
-                this.setState({ students: students, loading: false });
-                // console.log('STUDENTS: ', this.state.students);
-            }).catch(error => {
-                this.setState({ error: true });
-                // this.setState({message: (<div className={classes.Error}>Username or password is incorrect!</div>)});
-                console.log(error);
-                this.setState({ loading: false });
-                message.error('Session expired, Please login.');
-                localStorage.clear();
-                this.props.history.push({ pathname: '/login' });
-            }); */
         this.props.getStudents();
     }
 
@@ -138,8 +90,13 @@ class Students extends React.Component {
     }
 
     componentDidUpdate() {
-        console.log(this.props.stateStudents);
-        console.log('stateStudentUpdated : ', this.props.stateStudentUpdated);
+        // console.log(this.props);
+
+        // Check if the action results error. Logout if the unauthorized
+        if (this.props.propError) {
+            localStorage.clear();
+            this.props.history.push({ pathname: '/login' });
+        }
     }
 
     render() {
@@ -156,7 +113,7 @@ class Students extends React.Component {
                 <br />
                 <h3>STUDENTS INFORMATION</h3>
                 {/* <Table columns={this.cols} dataSource={this.state.students} bordered></Table> */}
-                <Table columns={this.cols} dataSource={this.props.stateStudents} bordered></Table>
+                <Table columns={this.cols} dataSource={this.props.propStudents} bordered></Table>
             </div>
         );
     }
@@ -164,8 +121,8 @@ class Students extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        stateStudents: state.students,
-        stateStudentUpdated: state.updated
+        propStudents: state.students,
+        propError: state.error
     };
 }
 
