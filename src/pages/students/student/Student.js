@@ -104,7 +104,7 @@ class Student extends React.Component {
                             <Form.Item
                                 name="email"
                                 rules={[
-                                    { required: true, message: 'Name is required' }
+                                    { required: true, message: 'Email is required' }
                                 ]}
                             >
                                 <Input type="email" placeholder="Email" />
@@ -112,7 +112,7 @@ class Student extends React.Component {
                             <Form.Item
                                 name="class"
                                 rules={[
-                                    { required: true, message: 'Name is required' }
+                                    { required: true, message: 'Class is required' }
                                 ]}
                             >
                                 <Input type="text" placeholder="Class" />
