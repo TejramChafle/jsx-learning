@@ -1,31 +1,49 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as classes from './Header.module.scss';
-import { PageHeader, Menu, DropDown, Row, Button } from 'antd';
-import { SnippetsOutlined, CodeOutlined, BarChartOutlined, CalenderOutlined, TeamOutlined, UserAddOutlined, TrophyOutlined, LogoutOutlined } from '@ant-design/icons';
+import { PageHeader, Menu } from 'antd';
+import { SnippetsOutlined, CodeOutlined, BarChartOutlined, LogoutOutlined, TeamOutlined, TrophyOutlined } from '@ant-design/icons';
+// import { MenuItem } from './menuitem/MenuItem';
 
 class Header extends React.Component {
 
     state = {
-        current:  window.location.pathname
+        current: window.location.pathname
     };
 
     navigate = e => {
         // console.log(e);
         this.props.history.push(e.key);
-        if (e.key == '/login') {
+        if (e.key === '/login') {
             localStorage.clear();
         } else {
             this.setState({ current: window.location.pathname });
         }
     };
-    
+
     render() {
-        // console.log(this.props);
-        // console.log(window.location)
+        // console.log(this.props);\
+
+        /* let menuitems = [
+            { label: 'Dashboard', path: '/dashboard', icon: <BarChartOutlined /> },
+            { label: 'Students', path: '/students', icon: <TeamOutlined /> },
+            { label: 'Courses', path: '/courses', icon: <CodeOutlined /> },
+            { label: 'Certificates', path: '/certificates', icon: <TrophyOutlined /> },
+            { label: 'Exams', path: '/exams', icon: <SnippetsOutlined /> }
+        ]; */
 
         const { current } = this.state;
         const menu = (
             <Menu onClick={this.navigate} selectedKeys={[current]} mode="horizontal" theme="dark">
+                {/* {menuitems.map((item, key) => {
+                    return (
+                        <MenuItem
+                            key={key}
+                            label={item.label}
+                            path={item.path}
+                            icon={item.icon}
+                        ></MenuItem>
+                    )
+                })} */}
                 <Menu.Item key="/dashboard" icon={<BarChartOutlined />}>
                     Dashboard
                 </Menu.Item>

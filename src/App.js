@@ -34,8 +34,8 @@ class App extends Component {
       routes = (
         <Switch>
           <Route path="/dashboard" component={Dashboard} />
-          <Route path="/students" component={Students} />
-          <Route path="/student" component={Student} />
+          <Route path="/students/student" component={Student} />
+          <Route path="/students" component={Students}/>
           <Route path="/exams" component={Exams} />
           <Route path="/certificates" component={Certificates} />
           <Route path="/courses" component={Courses} />
@@ -45,7 +45,7 @@ class App extends Component {
       );
 
       template = (
-        <div>
+        <div className="App">
           <Header {...this.props}/>
           <main>{routes}</main>
           <Footer />
@@ -60,16 +60,16 @@ class App extends Component {
         </Switch>
       )
       template = (
-        <div>
+        <div className="App">
           {routes}
         </div>
       );
     }
 
     return (
-      <div className="App">
+      <React.Fragment>
         {template}
-      </div>
+      </React.Fragment>
     )
   }
 }

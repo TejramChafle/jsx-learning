@@ -1,10 +1,8 @@
 import React from 'react';
-import { Card, Form, Input, Button, Select, Row, Col, message } from 'antd';
+import { Card, Form, Input, Button, Select, Row, Col } from 'antd';
 import * as classes from './Student.module.scss';
-import { connect } from 'react-redux';
-import * as actions from '../../../store/student/actions';
 
-class Student extends React.Component {
+class FormComponent extends React.Component {
     formRef = React.createRef();
     user = JSON.parse(localStorage.getItem('auth'));
     state = {
@@ -13,53 +11,11 @@ class Student extends React.Component {
         message: ''
     }
 
-    componentDidMount() {
-        if (this.props.location.state && this.props.location.state.student) {
-            this.formRef.current.setFieldsValue({
-                name: this.props.location.state.student.name,
-                gender: this.props.location.state.student.gender,
-                dob: this.props.location.state.student.dob,
-                class: this.props.location.state.student.class,
-                email: this.props.location.state.student.email
-            });
-        }
-    }
-
-    componentDidUpdate() {
-        // console.log(this.props);
-        if (this.props.propError) {
-            this.setState({ loading: false });
-            message.error('Something went wrong. Unable to save student information.');
-        } else if (this.props.propStudent) {
-            this.setState({ loading: false });
-            // message.success('Success! Student information saved successfully.');
-            this.props.history.push({ pathname: '/students' });
-        }
-    }
-
     render() {
         // console.log(this.props);
-        const layout = {
-            labelCol: { span: 8 },
-            wrapperCol: { span: 16 }
-        }
-        const tailLayout = {
-            wrapperCol: {
-                offset: 8,
-                span: 16
-            }
-        }
 
         const onFinish = formdata => {
-            // console.log('onFinish data : ', formdata);
-            if (this.props.location.state && this.props.location.state.student && this.props.location.state.student.key) {
-                // updateStudent(data);
-                this.setState({ loading: true });
-                this.props.onUpdate({...formdata, key: this.props.location.state.student.key});
-            } else {
-                this.setState({ loading: true });
-                this.props.onCreate(formdata);
-            }
+            console.log('onFinish data : ', formdata);
         }
 
         const onReset = () => {
@@ -135,18 +91,4 @@ class Student extends React.Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        propStudent: state.student,
-        propError: state.error
-    };
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        onCreate: (student) => dispatch(actions.addStudent(student)),
-        onUpdate: (student) => dispatch(actions.updateStudent(student)),
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Student);
+export default FormComponent;

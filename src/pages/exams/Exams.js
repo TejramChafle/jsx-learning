@@ -3,7 +3,7 @@ import React from 'react';
 class Exams extends React.Component {
     render() {
         return(
-            <h3>Exams working!</h3>
+            <h1>Exams working!</h1>
         )
     }
 }

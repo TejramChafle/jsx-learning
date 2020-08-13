@@ -10,6 +10,7 @@ import { createStore, applyMiddleware } from 'redux';
 import reducer from './store/student/reducer';
 import thunk from 'redux-thunk';
 
+
 // import axios from 'axios';
 
 /* axios.interceptors.request.use(request=> {
@@ -17,27 +18,27 @@ import thunk from 'redux-thunk';
 }); */
 
 const logger = store => {
-  return next => {
-    return action => {
-      // console.log('Middleware dispatching action: ', action );
-      const result = next(action);
-      // console.log('Middleware next state', store.getState());
-      return result;
-    }
-  }
+	return next => {
+		return action => {
+			// console.log('Middleware dispatching action: ', action );
+			const result = next(action);
+			// console.log('Middleware next state', store.getState());
+			return result;
+		}
+	}
 }
 
 const store = createStore(reducer, applyMiddleware(logger, thunk));
 
 ReactDOM.render(
-  <React.Fragment>
-    <Provider store={store} >
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>
-  </React.Fragment>,
-  document.getElementById('root')
+	<React.Fragment>
+		<BrowserRouter>
+			<Provider store={store} >
+				<App />
+			</Provider>
+		</BrowserRouter>
+	</React.Fragment>,
+	document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change

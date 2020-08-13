@@ -46,7 +46,7 @@ export const getStudents = () => {
                 };
                 dispatch(returnStudents(students, false));
             }).catch(error => {
-                console.log(error);
+                console.log(error.repsonse);
                 dispatch(returnStudents([], true));
                 message.error('Session expired, Please login.');
             });
@@ -63,7 +63,7 @@ export const addStudent = (student) => {
                 message.success('Success! Student information saved successfully.');
                 dispatch(returnStudent({ response }, false));
             }).catch(error => {
-                console.log(error);
+                console.log(error.repsonse);
                 message.error('Opps! Something went wrong. Unable to save student record.');
                 dispatch(returnStudent(null, true));
             });
@@ -80,7 +80,7 @@ export const updateStudent = (student) => {
                 message.success('Success! Student information saved successfully.');
                 dispatch(returnStudent({ response }, false));
             }).catch(error => {
-                console.log(error);
+                console.log(error.repsonse);
                 message.error('Opps! Something went wrong. Unable to save student record.');
                 dispatch(returnStudent(null, true));
             });
@@ -89,14 +89,24 @@ export const updateStudent = (student) => {
 
 export const deleteStudent = (student) => {
     const user = JSON.parse(localStorage.getItem('auth'));
-    return dispatch => {
-        axios.delete(API_URL + 'students/' + student.key + '/.json?auth=' + user.idToken)
+    return (dispatch, getState) => {
+        axios.delete(API_URL + 'students/' + student.key + ' /.json?auth=' + user.idToken)
             .then(response => {
-                console.log(response);
+                // console.log(response);
+
+                // FILTER THE STUDENT LIST ONCE RECORD DELETED 
+                let students = getState().students.filter((stud)=> {
+                    return stud.key !== student.key
+                });
+                dispatch(returnStudents(students, false));
+
+                // GET STUDENTS FROM SERVER
+                // dispatch(getStudents());
+
                 message.success('Student record deleted.');
-                dispatch(getStudents());
             }).catch(error => {
-                console.log(error);
+                console.log(error.response);
+                dispatch(returnStudents(null, true));
                 message.error('Opps! Something went wrong. Unable to delete student record.');
             });
     }

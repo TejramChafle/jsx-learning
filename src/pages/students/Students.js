@@ -6,7 +6,7 @@ import * as classes from './Students.module.scss';
 import { connect } from 'react-redux';
 import * as actions from '../../store/student/actions';
 
-class Students extends React.Component {
+export class Students extends React.Component {
     user = JSON.parse(localStorage.getItem('auth'));
     cols = [
         /* {
@@ -74,7 +74,7 @@ class Students extends React.Component {
     onEdit = (student) => {
         console.log('onEdit', student);
         this.props.history.push({
-            pathname: '/Student',
+            pathname: this.props.match.url + '/student',
             state: {
                 student
             }
@@ -82,21 +82,21 @@ class Students extends React.Component {
     }
 
     componentDidMount() {
-        this.props.getStudents();
+        // this.props.getStudents();
     }
 
     navigate = () => {
-        this.props.history.push({ pathname: '/student' });
+        this.props.history.push({ pathname: this.props.match.url + '/student' });
     }
 
     componentDidUpdate() {
-        // console.log(this.props);
+        console.log(this.props);
 
         // Check if the action results error. Logout if the unauthorized
-        if (this.props.propError) {
+        /* if (this.props.propError) {
             localStorage.clear();
             this.props.history.push({ pathname: '/login' });
-        }
+        } */
     }
 
     render() {
