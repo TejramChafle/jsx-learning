@@ -59,7 +59,7 @@ export const addStudent = (student) => {
     return dispatch => {
         axios.post(API_URL + 'students.json?auth=' + user.idToken, student)
             .then(response => {
-                // console.log('student update response: ', response);
+                console.log('add student response: ', response);
                 message.success('Success! Student information saved successfully.');
                 dispatch(returnStudent({ response }, false));
             }).catch(error => {
@@ -73,16 +73,24 @@ export const addStudent = (student) => {
 export const updateStudent = (student) => {
     // console.log(student);
     const user = JSON.parse(localStorage.getItem('auth'));
-    return dispatch => {
+    return (dispatch, getState) => {
         axios.put(API_URL + 'students/' + student.key + '.json?auth=' + user.idToken, student)
             .then(response => {
-                console.log('student update response: ', response);
+                // console.log('student update response:', response.data);
+                // dispatch(returnStudent({ response.data }, false));
+                let student = response.data;
+                getState().students.forEach((stud)=> {
+                    if (stud.key === student.key) {
+                        stud = student;
+                    }
+                });
+                // console.log(getState().students);
                 message.success('Success! Student information saved successfully.');
-                dispatch(returnStudent({ response }, false));
+                dispatch(returnStudent(student, false));
             }).catch(error => {
                 console.log(error.repsonse);
                 message.error('Opps! Something went wrong. Unable to save student record.');
-                dispatch(returnStudent(null, true));
+                dispatch(returnStudents(getState().students, true));
             });
     }
 }
@@ -90,7 +98,7 @@ export const updateStudent = (student) => {
 export const deleteStudent = (student) => {
     const user = JSON.parse(localStorage.getItem('auth'));
     return (dispatch, getState) => {
-        axios.delete(API_URL + 'students/' + student.key + ' /.json?auth=' + user.idToken)
+        axios.delete(API_URL + 'students/' + student.key + '/.json?auth=' + user.idToken)
             .then(response => {
                 // console.log(response);
 
